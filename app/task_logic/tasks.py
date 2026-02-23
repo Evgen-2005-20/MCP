@@ -2,7 +2,7 @@ from app.db.db import DataBase
 from datetime import datetime
 
 
-class Task:
+class TaskService:
     @staticmethod
     def create_task(db: DataBase, title: str, desc: str, deadline: str) -> int:
         if not title or len(title.strip()) < 3:
@@ -35,7 +35,12 @@ class Task:
         return db.delete_task(id_task)
 
     @staticmethod
-    def update_task(db: DataBase, id_task: int, title=None, desc=None, deadline=None, done=None) -> bool:
+    def update_task(db: DataBase, 
+                    id_task: int, 
+                    title=None, 
+                    desc=None, 
+                    deadline=None, 
+                    done=None) -> bool:
         if not isinstance(id_task, int) or id_task <= 0:
             raise ValueError("Invalid task id")
 
