@@ -1,11 +1,34 @@
 import sqlite3
 import logging
+from abc import ABC, abstractmethod
+
+class DataBase(ABC):
+    @abstractmethod
+    def add_task(self, title: str, desc: str, deadline: str, done: int = 0) -> bool:
+        pass
+    
+    @abstractmethod
+    def delete_task(self, id_task: int) -> bool:
+        pass
+    
+    @abstractmethod
+    def update_task(self, id_task: int, title=None, desc=None, deadline=None, done=None) -> bool:
+        pass
+    
+    @abstractmethod
+    def select_all_tasks(self) -> list | None:
+        pass
+    
+    @abstractmethod
+    def select_one_task(self, id_task: int) -> dict | None:
+        pass
+    
 
 
-class DataBase:
-    def __init__(self, db_name: str):
-        self.con = sqlite3.connect(db_name)
-        self.con.row_factory = sqlite3.Row  # чтобы получать словари
+class DataBaseSQLite(DataBase):
+    def __init__(self):
+        self.con = sqlite3.connect("tasks.db")
+        self.con.row_factory = sqlite3.Row 
         cursor = self.con.cursor()
 
         cursor.execute("""
